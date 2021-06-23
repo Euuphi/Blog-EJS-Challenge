@@ -30,8 +30,11 @@ app.get("/compose", function(req, res){
   res.render("compose");
 });
 
-app.post("/", function(req, res){
-  console.log(req.body.blogPost);
+app.post("/compose", function(req, res){
+  let post = {
+    title: req.body.postTitle,
+    body: req.body.postBody,
+  }
 });
 
 
