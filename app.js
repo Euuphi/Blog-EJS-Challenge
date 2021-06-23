@@ -26,7 +26,9 @@ app.get("/contact", function(req, res){
   res.render("contact", {pageParagraph: contactContent});
 });
 
-
+app.get("/compose", function(req, res){
+  res.render("compose");
+});
 
 
 app.listen(3000, function() {
