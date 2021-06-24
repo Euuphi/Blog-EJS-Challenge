@@ -22,7 +22,12 @@ app.get("/", function(req, res){
 })
 
 app.get("/posts/:title", function(req, res){
-  console.log(req.params);
+  const postParam = req.params
+  posts.forEach(function(post){
+    if (post.title === postParam.title) {
+      console.log("Match Found");
+    }
+  })
 });
 
 app.get("/about", function(req, res){
