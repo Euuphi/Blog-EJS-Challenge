@@ -21,6 +21,10 @@ app.get("/", function(req, res){
   res.render("home", {pageParagraph: homeStartingContent, posts: posts});
 })
 
+app.get("/posts/:title", function(req, res){
+  console.log(req.params);
+});
+
 app.get("/about", function(req, res){
   res.render("about", {pageParagraph: aboutContent});
 });
