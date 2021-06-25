@@ -17,9 +17,15 @@ app.use(express.static("public"));
 
 //Global Variabe Declarations
 const posts = [];
+const postsTrunc = [];
 
 app.get("/", function(req, res){
-  res.render("home", {pageParagraph: homeStartingContent, posts: posts});
+  postsTrunc.forEach(function(post){
+    if (post.body.length >= 100) {
+      post.body = post.body.slice(0, 100) + "...";
+    }
+  });
+  res.render("home", {pageParagraph: homeStartingContent, postsTrunc: postsTrunc});
 })
 
 app.get("/posts/:title", function(req, res){
@@ -53,6 +59,7 @@ app.post("/compose", function(req, res){
   }
 
   posts.push(post);
+  postsTrunc.push(post);
   res.redirect("/");
 });
 

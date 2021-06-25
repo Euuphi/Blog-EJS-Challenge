@@ -2,7 +2,7 @@
 
     <h1>Home</h1>
     <p><%= pageParagraph %></p>
-    <% posts.forEach(function(post){ %>
+    <% postsTrunc.forEach(function(post){ %>
       <h1><%= post.title %></h1>
       <p><%= post.body %></p>
     <% }); %>
