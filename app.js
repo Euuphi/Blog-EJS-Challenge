@@ -23,12 +23,15 @@ app.get("/", function(req, res){
 })
 
 app.get("/posts/:title", function(req, res){
-  const postParam = req.params.title
+  const postParam = _.lowerCase(req.params.title);
+
   posts.forEach(function(post){
-    if (_.lowerCase(post.title) === _.lowerCase(postParam)) {
-      console.log("Match found");
+    if (_.lowerCase(post.title) === postParam) {
+      res.render("post", {postTitle: post.title, postBody: post.body});
     }
   });
+
+  res.render("post", {postTitle: "Sorry no match was found for: '" + postParam + "'", postBody: "Please return to the home page and check the URL matches an existing post title"});
 });
 
 app.get("/about", function(req, res){
