@@ -17,27 +17,33 @@ app.use(express.static("public"));
 
 //Global Variabe Declarations
 const posts = [];
-const postsTrunc = [];
 
 app.get("/", function(req, res){
-  postsTrunc.forEach(function(post){
-    if (post.body.length >= 100) {
-      post.body = post.body.slice(0, 100) + "...";
+  posts.forEach(function(post){
+    if (post.body.full.length <= 100) {
+      post.body.trunc = post.body.full
+    } else {
+        post.body.trunc = post.body.full.slice(0, 100) + "...";
     }
   });
-  res.render("home", {pageParagraph: homeStartingContent, postsTrunc: postsTrunc});
+  res.render("home", {pageParagraph: homeStartingContent, posts: posts});
 })
 
 app.get("/posts/:title", function(req, res){
   const postParam = _.lowerCase(req.params.title);
+  let matchFound = false;
 
   posts.forEach(function(post){
-    if (_.lowerCase(post.title) === postParam) {
-      res.render("post", {postTitle: post.title, postBody: post.body});
+    if (_.lowerCase(post.title.full) === postParam) {
+      res.render("post", {postTitle: post.title.full, postBody: post.body.full});
+      matchFound = true;
     }
   });
 
-  res.render("post", {postTitle: "Sorry no match was found for: '" + postParam + "'", postBody: "Please return to the home page and check the URL matches an existing post title"});
+  if (!matchFound) {
+    res.render("post", {postTitle: "Sorry no match was found for: '" + postParam + "'", postBody: "Please return to the home page and check the URL matches an existing post title"});
+  }
+
 });
 
 app.get("/about", function(req, res){
@@ -54,12 +60,11 @@ app.get("/compose", function(req, res){
 
 app.post("/compose", function(req, res){
   const post = {
-    title: req.body.postTitle,
-    body: req.body.postBody,
-  }
+    title: {full: req.body.postTitle, kebab: _.kebabCase(req.body.postTitle)},
+    body: {full: req.body.postBody, trunc: ""}
+  };
 
   posts.push(post);
-  postsTrunc.push(post);
   res.redirect("/");
 });
 
